@@ -53,9 +53,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context:.
-          # 在这里指定需要支持的平台
+          # 修复点 1：将上下文 "." 用引号括起来，避免 YAML 解析歧义
+          context: "."
+          # 指定需要支持的架构
           platforms: linux/amd64,linux/arm64
+          # 修复点 2：虽然通常不需要，但给表达式加上引号更安全
           push: ${{ github.event_name!= 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
